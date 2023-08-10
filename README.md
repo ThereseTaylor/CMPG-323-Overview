@@ -20,5 +20,7 @@ The purpose of gitignore file in the repository is to ensure that certain files 
 **<ins>Storage of Credentials:<ins>** <br />
 Sensitive values should never be stored as plaintext in workflow files, but rather as secrets (Github Action). These secrets will be configured at repository level. Secrets are encrypted before reaching GitHub, it occurs when the secret is submitted using the UI or through the REST API. It helps minimize the risks related to accidental logging (for example, exception logs and request logs, among others) within GitHub's infrastructure. Once the secret is uploaded, GitHub is then able to decrypt it so that it can be injected into the workflow runtime.
 
-**<ins>Burndown Chart:<ins>**
+**<ins>Burndown Chart:<ins>** <br />
+* ![BurndownChart](https://github.com/ThereseTaylor/CMPG-323-Overview-25830473/assets/112098539/c32d0502-7717-40e4-b352-746cbd1ad258)
+
 
