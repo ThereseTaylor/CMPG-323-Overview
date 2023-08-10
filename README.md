@@ -1,4 +1,3 @@
-![0_N0WztDAMS3qpaA4E](https://github.com/ThereseTaylor/CMPG-323-Overview-25830473/assets/112098539/ff9572de-4823-46eb-9e0e-b9d869cd53f5)
 # CMPG-323-Overview-25830473
 
 #Outline of Repositories:
@@ -11,7 +10,8 @@ This Overview Repository will be used to group all the other projects together a
 #Project Structure:
 
 #Branching Strategy: 
-This repository will make use of a main and develop branch. The main branch will be used to store the official release history (that will be the history of the finished version of each project). The develop branch will contain the complete development history of each project.
+This repository will make use of main, develop and feature branches. The main branch will be used to store the official release history (that will be the history of the finished version of each project). The develop branch will contain the complete development history of each project and serve as an integration branch for features. Each new feature will reside in its own branch, with develop as their parent branch. When a feature is complete, it gets merged back into develop.
+![gitflow](https://github.com/ThereseTaylor/CMPG-323-Overview-25830473/assets/112098539/291f9292-3e13-4e94-afd5-705a3af9bd42)
 
 Use of .gitignore File:
 The purpose of gitignore files is to ensure that certain files not tracked by Git remain untracked. The git ignore file rule allows you to ignore a file you've committed in the past. You use it when you do not want to recommit a file
