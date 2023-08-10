@@ -1,6 +1,6 @@
 # CMPG-323-Overview-25830473
 
-#Outline of Repositories:
+#Outline of Repositories: <br />
 This Overview Repository will be used to group all the other projects together as well as link the Github project created for Project 1. Each project will have a seperate folder within this repository,  which will be used as follows:
   *CMPG 323 Project 2 - 25830473: In this project I will create a CRUD Restful API;
   *CMPG 323 Project 3 - 25830473: In this project I will take a existing ASP.NET Core MVC Web Application and enhance it;
