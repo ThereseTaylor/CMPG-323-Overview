@@ -15,15 +15,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "CMPG323API");
+        options.RoutePrefix = string.Empty;
+    });
+}
+    
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 app.UseAuthorization();
 
-IConfiguration configuration = app.Configuration;
-IWebHostEnvironment environment = app.Environment;
+//IConfiguration configuration = app.Configuration;
+//IWebHostEnvironment environment = app.Environment;
 
 app.MapControllers();
 
