@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMPG323API.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace CMPG323API.Controllers
 {
@@ -31,14 +32,15 @@ namespace CMPG323API.Controllers
             return await _context.Orders.ToListAsync();
         }
 
+        //GET: api/Orders/int/5
         //Get method that retrieves one Order based on given id
-        [HttpGet("{id}")]
+        [HttpGet("int/{id:int}")]
         public async Task<ActionResult<Order>> GetOrder(short id)
         {
-          if (_context.Orders == null)
-          {
-              return NotFound();
-          }
+            if (_context.Orders == null)
+            {
+                return NotFound();
+            }
             var order = await _context.Orders.FindAsync(id);
 
             if (order == null)
@@ -47,10 +49,30 @@ namespace CMPG323API.Controllers
             }
 
             return order;
+         }
+
+        // GET: api/Orders/5
+        // Get method that retrieves call orders related to a customer
+        [HttpGet("{customerid}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetCOrder(short customerid)
+        {
+            if (_context.Orders == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.Where(x => x.CustomerId == customerid).ToListAsync(); 
+
+            if (order.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return order;
         }
 
-        // PUT: api/Orders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //PUT: api/Orders/5
+        //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(short id, Order order)
         {
@@ -79,7 +101,6 @@ namespace CMPG323API.Controllers
 
             return NoContent();
         }
-
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -129,6 +150,7 @@ namespace CMPG323API.Controllers
             return NoContent();
         }
 
+        //Check if order exists before DELETE or POST
         private bool OrderExists(short id)
         {
             return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();

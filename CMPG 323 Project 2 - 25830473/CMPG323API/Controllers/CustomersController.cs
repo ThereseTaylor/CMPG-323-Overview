@@ -20,6 +20,7 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
+        // GET: api/Customers
         // Get method that retrieves all Customers entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
@@ -31,6 +32,7 @@ namespace CMPG323API.Controllers
             return await _context.Customers.ToListAsync();
         }
 
+        // GET: api/Customers/5
         // Get method that retrieves one Customer based on given id
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(short id)
@@ -81,6 +83,7 @@ namespace CMPG323API.Controllers
         }
 
         // POST: api/Customers
+        // POST method that will create a new Customer
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
@@ -110,6 +113,7 @@ namespace CMPG323API.Controllers
         }
 
         // DELETE: api/Customers/5
+        // DELETE method to delete existing customer
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(short id)
         {
@@ -129,6 +133,7 @@ namespace CMPG323API.Controllers
             return NoContent();
         }
 
+        //Check if customer exists before DELETE or POST
         private bool CustomerExists(short id)
         {
             return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMPG323API.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace CMPG323API.Controllers
 {
@@ -20,7 +21,8 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
-        //Get method that retrieves all Product entries
+        // GET: api/Products
+        // Get method that retrieves all Product entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
@@ -31,7 +33,8 @@ namespace CMPG323API.Controllers
             return await _context.Products.ToListAsync();
         }
 
-        //Get method that retrieves one Product based on given id
+        // GET: api/Products/5
+        // Get method that retrieves one Product based on given id
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(short id)
         {
@@ -48,6 +51,10 @@ namespace CMPG323API.Controllers
 
             return product;
         }
+
+        // GET: api/Products/5
+        // Get method that retrieves all the Product based on given order id
+        // 
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -110,6 +117,7 @@ namespace CMPG323API.Controllers
         }
 
         // DELETE: api/Products/5
+        // DELETE method to delete existing product
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(short id)
         {
@@ -129,6 +137,7 @@ namespace CMPG323API.Controllers
             return NoContent();
         }
 
+        //Check if product exists before DELETE or POST
         private bool ProductExists(short id)
         {
             return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
