@@ -31,7 +31,7 @@ namespace CMPG323API.Controllers
             return await _context.Customers.ToListAsync();
         }
 
-        // GET: api/Customers/5
+        // Get method that retrieves one Customer based on given id
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(short id)
         {

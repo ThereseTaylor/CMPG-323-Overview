@@ -31,7 +31,7 @@ namespace CMPG323API.Controllers
             return await _context.Products.ToListAsync();
         }
 
-        // GET: api/Products/5
+        //Get method that retrieves one Product based on given id
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(short id)
         {
