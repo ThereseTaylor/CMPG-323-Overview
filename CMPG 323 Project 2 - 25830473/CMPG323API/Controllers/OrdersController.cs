@@ -20,7 +20,7 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
-        // GET: api/Orders
+        //Get method that retrieves all Order entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {

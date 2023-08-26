@@ -20,7 +20,7 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
-        // GET: api/Customers
+        // Get method that retrieves all Customers entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {

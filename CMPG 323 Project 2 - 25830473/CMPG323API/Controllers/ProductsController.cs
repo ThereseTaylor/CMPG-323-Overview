@@ -20,7 +20,7 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
-        // GET: api/Products
+        //Get method that retrieves all Product entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
