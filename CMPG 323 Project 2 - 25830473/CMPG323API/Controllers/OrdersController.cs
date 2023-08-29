@@ -54,7 +54,7 @@ namespace CMPG323API.Controllers
         // GET: api/Orders/5
         // Get method that retrieves call orders related to a customer
         [HttpGet("{customerid}")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetCOrder(short customerid)
+        public async Task<ActionResult<IEnumerable<Order>>> GetCustomerOrder(short customerid)
         {
             if (_context.Orders == null)
             {

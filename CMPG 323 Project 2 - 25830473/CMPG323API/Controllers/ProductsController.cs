@@ -35,7 +35,7 @@ namespace CMPG323API.Controllers
 
         // GET: api/Products/5
         // Get method that retrieves one Product based on given id
-        [HttpGet("{id}")]
+        [HttpGet("int/{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(short id)
         {
           if (_context.Products == null)
@@ -53,8 +53,33 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Products/5
-        // Get method that retrieves all the Product based on given order id
-        // 
+        // Get method that retrieves all the Products based on given order id
+        [HttpGet("{orderid}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetOrderedProduct(short orderid)
+        {
+            if (_context.Orders == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products.Join(_context.OrderDetails, products => products.ProductId,
+                 orderdetails => orderdetails.ProductId,
+                (products, orderdetails) => new
+                {
+                    Products = products,
+                    OrderDetails = orderdetails
+                })
+                .Where(entity => entity.OrderDetails.OrderId == orderid)
+                .Select(entity => entity.Products)
+                .ToListAsync();
+
+            if (product.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return product;
+        }
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
