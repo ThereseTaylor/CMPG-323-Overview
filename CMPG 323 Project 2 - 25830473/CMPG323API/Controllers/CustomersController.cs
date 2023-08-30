@@ -54,6 +54,7 @@ namespace CMPG323API.Controllers
         }
 
         // PUT: api/Customers/5
+        // Update the details of a customer
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(short id, Customer customer)
         {

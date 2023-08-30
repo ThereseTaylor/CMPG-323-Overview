@@ -74,7 +74,8 @@ namespace CMPG323API.Controllers
             return order;
         }
 
-        //PUT: api/Orders/5
+        // PUT: api/Orders/5
+        // Update the details of a order
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(short id, Order order)
         {
