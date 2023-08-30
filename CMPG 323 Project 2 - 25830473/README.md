@@ -30,14 +30,6 @@ To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
     </ul>
 </ul>
 
-<strong>Orders:</strong>
-<ul> 
-  <li>GET: /api/Customers</li>
-  <li>GET: /api/Customers/{id}</li>
-  <li>POST: /api/Customers</li>
-  <li>DELETE: /api/Customers/{id}</li>
-</ul>
-
 **<ins>Reference List:</ins>**<br />
 <ul>
   <li>Anderson, R. 2023. <em>Controller action return types in ASP.NET Core web API.</em> https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0 Date of access: 28 Aug. 2023.</li>
