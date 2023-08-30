@@ -24,7 +24,7 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Products
-        // Get method that retrieves all Product entries
+        // Retrieves all product entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
@@ -36,7 +36,7 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Products/5
-        // Get method that retrieves one Product based on given id
+        // Retrieves a product based on its id
         [HttpGet("int/{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(short id)
         {
@@ -55,7 +55,7 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Products/5
-        // Get method that retrieves all the Products based on given order id
+        // Retrieves all the products related to a specific order
         [HttpGet("{orderid}")]
         public async Task<ActionResult<IEnumerable<Product>>> GetOrderedProduct(short orderid)
         {
@@ -84,7 +84,6 @@ namespace CMPG323API.Controllers
         }
 
         // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(short id, Product product)
         {
@@ -115,7 +114,7 @@ namespace CMPG323API.Controllers
         }
 
         // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Add a new product
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
@@ -144,7 +143,7 @@ namespace CMPG323API.Controllers
         }
 
         // DELETE: api/Products/5
-        // DELETE method to delete existing product
+        // Remove existing product
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(short id)
         {
