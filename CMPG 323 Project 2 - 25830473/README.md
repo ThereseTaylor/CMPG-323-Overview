@@ -1,8 +1,42 @@
 # CMPG 323 Project 2
 
 **<ins>How to use:</ins>**<br />
+To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
 
-**<ins>Endpoints:</ins>**<br />
+**<ins>Endpoints:</ins>**
+<ul> 
+  <li><strong>Customers:</strong></li>
+    <ul>
+      <li>GET: /api/Customers</li>
+      <li>GET: /api/Customers/{id}</li>
+      <li>POST: /api/Customers</li>
+      <li>DELETE: /api/Customers/{id}</li>
+    </ul>
+  <li><strong>Orders:</strong></li>
+    <ul>
+      <li>GET: /api/Orders</li>
+      <li>GET: /api/Orders/int/{id}</li>
+      <li>GET: /api/Orders/{customerid}</li>
+      <li>POST: /api/Orders</li>
+      <li>DELETE: /api/Orders/{id}</li>
+    </ul>
+  <li><strong>Products:</strong></li>
+    <ul>
+      <li>GET: /api/Products</li>
+      <li>GET: /api/Products/int/{id}</li>
+      <li>GET: /api/Products/{orderid}</li>
+      <li>POST: /api/Products</li>
+      <li>DELETE: /api/Products/{id}</li>
+    </ul>
+</ul>
+
+<strong>Orders:</strong>
+<ul> 
+  <li>GET: /api/Customers</li>
+  <li>GET: /api/Customers/{id}</li>
+  <li>POST: /api/Customers</li>
+  <li>DELETE: /api/Customers/{id}</li>
+</ul>
 
 **<ins>Reference List:</ins>**<br />
 <ul>
