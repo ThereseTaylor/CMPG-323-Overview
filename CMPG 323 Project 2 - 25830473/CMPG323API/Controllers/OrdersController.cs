@@ -23,7 +23,8 @@ namespace CMPG323API.Controllers
             _context = context;
         }
 
-        //Get method that retrieves all Order entries
+        // GET: api/Orders
+        // Retrieves all order entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
@@ -34,8 +35,8 @@ namespace CMPG323API.Controllers
             return await _context.Orders.ToListAsync();
         }
 
-        //GET: api/Orders/int/5
-        //Get method that retrieves one Order based on given id
+        // GET: api/Orders/int/5
+        // Retrieves one order based on its id
         [HttpGet("int/{id:int}")]
         public async Task<ActionResult<Order>> GetOrder(short id)
         {
@@ -54,7 +55,7 @@ namespace CMPG323API.Controllers
          }
 
         // GET: api/Orders/5
-        // Get method that retrieves call orders related to a customer
+        // Retrieves call orders related to a customer
         [HttpGet("{customerid}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetCustomerOrder(short customerid)
         {
@@ -74,7 +75,6 @@ namespace CMPG323API.Controllers
         }
 
         //PUT: api/Orders/5
-        //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(short id, Order order)
         {
@@ -103,8 +103,9 @@ namespace CMPG323API.Controllers
 
             return NoContent();
         }
+
         // POST: api/Orders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Create a new order
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
@@ -133,6 +134,7 @@ namespace CMPG323API.Controllers
         }
 
         // DELETE: api/Orders/5
+        // Remove a existing order
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(short id)
         {

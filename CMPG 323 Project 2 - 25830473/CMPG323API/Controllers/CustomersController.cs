@@ -23,7 +23,7 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Customers
-        // Get method that retrieves all Customers entries
+        // Retrieves all customers entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
@@ -35,7 +35,7 @@ namespace CMPG323API.Controllers
         }
 
         // GET: api/Customers/5
-        // Get method that retrieves one Customer based on given id
+        // Retrieves one customer based on their id
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(short id)
         {
@@ -54,7 +54,6 @@ namespace CMPG323API.Controllers
         }
 
         // PUT: api/Customers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(short id, Customer customer)
         {
@@ -85,8 +84,7 @@ namespace CMPG323API.Controllers
         }
 
         // POST: api/Customers
-        // POST method that will create a new Customer
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Create a new customer
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
@@ -115,7 +113,7 @@ namespace CMPG323API.Controllers
         }
 
         // DELETE: api/Customers/5
-        // DELETE method to delete existing customer
+        // Delete existing customer
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(short id)
         {
