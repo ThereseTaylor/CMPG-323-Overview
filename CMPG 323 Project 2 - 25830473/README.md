@@ -9,6 +9,7 @@ To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
     <ul>
       <li>GET: /api/Customers</li>
       <li>GET: /api/Customers/{id}</li>
+      <li>PUT: /api/Customers/{id}</li>
       <li>POST: /api/Customers</li>
       <li>DELETE: /api/Customers/{id}</li>
     </ul>
@@ -17,6 +18,7 @@ To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
       <li>GET: /api/Orders</li>
       <li>GET: /api/Orders/int/{id}</li>
       <li>GET: /api/Orders/{customerid}</li>
+      <li>PUT: /api/Orders/{id}</li>
       <li>POST: /api/Orders</li>
       <li>DELETE: /api/Orders/{id}</li>
     </ul>
@@ -25,8 +27,17 @@ To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
       <li>GET: /api/Products</li>
       <li>GET: /api/Products/int/{id}</li>
       <li>GET: /api/Products/{orderid}</li>
+      <li>PUT: /api/Products/{id}</li>
       <li>POST: /api/Products</li>
       <li>DELETE: /api/Products/{id}</li>
+    </ul>
+  <li><strong>Order Details:</strong></li>
+    <ul>
+      <li>GET: /api/OrderDetails</li>
+      <li>GET: /api/OrderDetails/{id}</li>
+      <li>PUT: /api/OrderDetails/{id}</li>
+      <li>POST: /api/OrderDetails</li>
+      <li>DELETE: /api/OrderDetails/{id}</li>
     </ul>
 </ul>
 
