@@ -13,7 +13,8 @@
     </ul>
   <li>Methods:</li>
     <ul>
-      <li>Delete: you can not delete a record that is referenced in another table (as a foreign key), as the database restricts this.</li>
+      <li>There is 5 entries in each table, thus if the method requires an id as input only 1-5 will return an answer.</li>
+      <li>Delete: you can not delete a record that is referenced in another table (as a foreign key), as the database restricts this. Thus only id: 4, 5 of Customers and Products can be used for testing purposes.</li>
       <li>Post: to add a new record to a spesific table, you have to remove all the content of the other tables shown in the api output, aswell as the last comma, before executing it.</li>
     </ul>
 </ul>
