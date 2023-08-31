@@ -1,7 +1,22 @@
 # CMPG 323 Project 2
 
 **<ins>How to use:</ins>**<br />
-To access API: https://cmpg323project2-dev.azurewebsites.net/<br />
+<ul>
+  <li>To access API: https://cmpg323project2-dev.azurewebsites.net/<br /></li>
+  <li><strong>Authentication:</strong></li>
+    <ul>
+      <li>Register if you are a new user. Password should adhere to good practices, make sure to store your password for later use. End point: /api/Authenticate/register./</li>
+      <li>If you are registered then log in to access the rest of the system. End point: /api/Authenticate/login</li>
+      <li>After you have logged in, you will receive a token in the response section, copy this token.</li>
+      <li>Go to the Authorize button at the top of the page or select the lock on any method and paste the token in the textbox, in the following format: Bearer[space]"your token".</li>
+      <li>After you are authorized you can access and execute any method.</li>
+    </ul>
+  <li>Methods:</li>
+    <ul>
+      <li>Delete: you can not delete a record that is referenced in another table (as a foreign key), as the database restricts this.</li>
+      <li>Post: to add a new record to a spesific table, you have to remove all the content of the other tables shown in the api output, aswell as the last comma, before executing it.</li>
+    </ul>
+</ul>
 
 **<ins>Endpoints:</ins>**
 <ul> 
