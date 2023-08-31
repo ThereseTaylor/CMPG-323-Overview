@@ -134,7 +134,7 @@ namespace CMPG323API.Controllers
             return NoContent();
         }
 
-        //Check if customer exists before DELETE or POST
+        // Check if customer exists before DELETE or POST
         private bool CustomerExists(short id)
         {
             return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();

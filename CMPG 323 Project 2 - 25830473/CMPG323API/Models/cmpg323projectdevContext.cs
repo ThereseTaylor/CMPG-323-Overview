@@ -23,7 +23,7 @@ namespace CMPG323API.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+            optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection");  
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
