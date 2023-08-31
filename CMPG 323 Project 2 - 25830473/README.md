@@ -2,7 +2,7 @@
 
 **<ins>How to use:</ins>**<br />
 <ul>
-  <li>To access API: https://cmpg323project2-dev.azurewebsites.net/<br /></li>
+  <li>To access API: https://cmpg323project2-dev.azurewebsites.net/. This will display all the functionalities, using Swagger UI.<br /></li>
   <li><strong>Authentication:</strong></li>
     <ul>
       <li>Register if you are a new user. Password should adhere to good practices, make sure to store your password for later use. End point: /api/Authenticate/register./</li>
@@ -21,6 +21,12 @@
 
 **<ins>Endpoints:</ins>**
 <ul> 
+  <li><strong>Authentication:</strong></li>
+  <ul>
+      <li>POST: /api/Authenticate/login</li>
+      <li>POST: /api/Authenticate/register</li>
+      <li>POST: /api/Authenticate/register-admin</li>
+    </ul>
   <li><strong>Customers:</strong></li>
     <ul>
       <li>GET: /api/Customers</li>
