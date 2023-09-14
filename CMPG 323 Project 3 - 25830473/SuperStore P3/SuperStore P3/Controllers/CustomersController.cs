@@ -15,28 +15,23 @@ namespace Controllers
     [Authorize]
     public class CustomersController : Controller
     {
-        CustomerRepository customerRepository = new CustomerRepository();
+
+        private IGenericRepository<Customer> genericRepository = null;
+
+        public CustomersController(IGenericRepository<Customer> repository)
+        {
+            this.genericRepository = repository;
+        }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-
-            var results = customerRepository.GetAll();
-
+            var results = genericRepository.GetAll();
             return View(results);
         }
 
-
-        // GET: Customers/Details/5
-        public ViewResult Details(int id)
-        {
-            Customer customer = customerRepository.GetCustomerByID(id);
-            return View(customer);
-        }
-
-
         // GET: Customers/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -44,38 +39,41 @@ namespace Controllers
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
+        public ActionResult Create([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, Cellphone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                customerRepository.InsertCustomer(customer);
-                customerRepository.Save();
+                genericRepository.Insert(customer);
+                genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
         }
 
-        // GET: Customers/Edit/5
+        // GET: Customer/Edit/5
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            Customer customer = customerRepository.GetCustomerByID(id);
+            Customer customer = genericRepository.GetById(id);
             return View(customer);
         }
 
-        //POST: Customers/Edit/5
+        // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
+        public ActionResult Edit([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, Cellphone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                customerRepository.UpdateCustomer(customer);
-                customerRepository.Save();
-                return RedirectToAction("Index");
+                genericRepository.Update(customer);
+                genericRepository.Save();
+                return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            else
+            {
+                return View(customer);
+            }
         }
-
 
         // GET: Customers/Delete/5
         public ActionResult Delete(bool? saveChangesError = false, int id = 0)
@@ -84,32 +82,19 @@ namespace Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Customer customer = customerRepository.GetCustomerByID(id);
+            Customer customer = genericRepository.GetById(id);
             return View(customer);
         }
 
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
-            if (CustomerExists(id))
-            {
-                Customer customer = customerRepository.GetCustomerByID(id);
-                customerRepository.DeleteCustomer(id);
-                customerRepository.Save();
-            }
-            else
-            {
-                return NotFound();
-            }
-
+            genericRepository.Delete(id);
+            genericRepository.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
-        {
-            return customerRepository.Exists(id);
-        }
     }
 }
