@@ -96,5 +96,9 @@ namespace Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //private bool ProductExists(Customer customer)
+        //{
+        //    return genericRepository.Exists(customer);
+        //}
     }
 }

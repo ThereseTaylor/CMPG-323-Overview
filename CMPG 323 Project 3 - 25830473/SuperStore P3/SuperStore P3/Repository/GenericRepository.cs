@@ -50,5 +50,11 @@ namespace EcoPower_Logistics.Repository
             _context.SaveChanges();
         }
 
+        //public bool Exists(T entity)
+        //{
+        //    return _context.Set<T>().Any(e => e == entity);
+                           
+        //}
+
     }
 }
