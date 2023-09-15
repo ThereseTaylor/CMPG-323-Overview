@@ -26,7 +26,7 @@ namespace Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            var results = genericRepository.GetAll();
+            var results = genericRepository.GetAll().ToList();
             return View(results);
         }
 

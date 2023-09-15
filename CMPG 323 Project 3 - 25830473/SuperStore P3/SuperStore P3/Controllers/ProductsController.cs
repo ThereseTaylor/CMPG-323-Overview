@@ -15,24 +15,6 @@ namespace Controllers
     [Authorize]
     public class ProductsController : Controller
     {
-        // GET: Products/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null || _context.Products == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = await _context.Products
-        //        .FirstOrDefaultAsync(m => m.ProductId == id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(product);
-        //}
-
         private IGenericRepository<Product> genericRepository = null;
 
         public ProductsController(IGenericRepository<Product> repository)
@@ -43,8 +25,15 @@ namespace Controllers
         // GET: Products
         public ActionResult Index()
         {
-            var results = genericRepository.GetAll();
+            var results = genericRepository.GetAll().ToList();
             return View(results);
+        }
+
+        // GET: Products/Details/5
+        public ActionResult Details(int id)
+        {
+            var result = genericRepository.GetAll().FirstOrDefault(p => p.ProductId == id);
+            return View(result);
         }
 
         // GET: Products/Create
