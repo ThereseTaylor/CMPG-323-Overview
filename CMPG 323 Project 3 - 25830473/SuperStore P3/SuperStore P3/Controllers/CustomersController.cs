@@ -30,6 +30,13 @@ namespace Controllers
             return View(results);
         }
 
+        // GET: Customers/Details/5
+        public ActionResult Details(int id)
+        {
+            var result = genericRepository.GetAll().FirstOrDefault(c => c.CustomerId == id);
+            return View(result);
+        }
+
         // GET: Customers/Create
         public ActionResult Create()
         {
@@ -39,7 +46,7 @@ namespace Controllers
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, Cellphone")] Customer customer)
+        public ActionResult Create([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -61,12 +68,26 @@ namespace Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, Cellphone")] Customer customer)
+        public ActionResult Edit([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
         {
             if (ModelState.IsValid)
-            {
-                genericRepository.Update(customer);
-                genericRepository.Save();
+            {             
+                try
+                {
+                    genericRepository.Update(customer);
+                    genericRepository.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CustomerExists(customer.CustomerId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -96,9 +117,9 @@ namespace Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //private bool ProductExists(Customer customer)
-        //{
-        //    return genericRepository.Exists(customer);
-        //}
+        private bool CustomerExists(int id)
+        {
+            return (genericRepository.GetAll()?.Any(e => e.CustomerId == id)).GetValueOrDefault();
+        }
     }
 }

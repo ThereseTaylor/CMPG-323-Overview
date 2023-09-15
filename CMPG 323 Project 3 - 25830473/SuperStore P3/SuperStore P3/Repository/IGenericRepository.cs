@@ -14,7 +14,6 @@ namespace EcoPower_Logistics.Repository
         void Insert(T entity);
         void Update(T entity);
         void Delete(int id);
-        //bool Exists(T id);
         void Save();
     }
 

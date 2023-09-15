@@ -25,18 +25,12 @@ namespace EcoPower_Logistics.Repository
         {
             return _context.Set<T>();
         }
+
         public T GetById(int id)
         {
             return _context.Set<T>().Find(id);
      
         }
-
-        //// GET: Products/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    var product = await _context.Products.FirstOrDefaultAsync(m => m.ProductId == id);
-        //    return View(product);
-        //} 
 
         public void Insert(T entity)
         {
@@ -58,12 +52,6 @@ namespace EcoPower_Logistics.Repository
         {
             _context.SaveChanges();
         }
-
-        //public bool Exists(T entity)
-        //{
-        //    return _context.Set<T>().Any(e => e == entity);
-                           
-        //}
-
+       
     }
 }

@@ -71,14 +71,29 @@ namespace Controllers
         {
             if (ModelState.IsValid)
             {
-                genericRepository.Update(product);
-                genericRepository.Save();
+                try
+                {
+                    genericRepository.Update(product);
+                    genericRepository.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductExists(product.ProductId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             else
             {
                 return View(product);
             }
+
         }
 
         // GET: Products/Delete/5
@@ -100,6 +115,11 @@ namespace Controllers
             genericRepository.Delete(id);
             genericRepository.Save();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ProductExists(int id)
+        {
+            return (genericRepository.GetAll()?.Any(e => e.ProductId == id)).GetValueOrDefault();
         }
     }
 }
