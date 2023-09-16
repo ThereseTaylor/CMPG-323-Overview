@@ -21,7 +21,7 @@ namespace Models
         public string? DeliveryAddress { get; set; }
 
         [DisplayName("Customer")]
-        public virtual Customer Customer { get; set; } = null!;
+        public virtual Customer? Customer { get; set; } = null!;
         [DisplayName("Order Details")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
