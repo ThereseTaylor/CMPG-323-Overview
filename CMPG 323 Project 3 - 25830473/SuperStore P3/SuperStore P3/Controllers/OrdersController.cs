@@ -38,7 +38,7 @@ namespace Controllers
             }
 
             var order = genericRepository.GetAll().Include(o => o.Customer).FirstOrDefault(m => m.OrderId == id);
- 
+
             if (order == null)
             {
                 return NotFound();
@@ -145,14 +145,14 @@ namespace Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            
+
             if (genericRepository.GetAll().ToList() == null)
             {
                 return Problem("Entity set 'SuperStoreContext.Orders'  is null.");
             }
-            
+
             var order = genericRepository.GetById(id);
- 
+
             if (order != null)
             {
                 genericRepository.Delete(id);

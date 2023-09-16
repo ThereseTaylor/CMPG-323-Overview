@@ -8,24 +8,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using Models;
+using EcoPower_Logistics.Repository;
 
 namespace Controllers
 {
     [Authorize]
     public class OrderDetailsController : Controller
     {
-        private readonly SuperStoreContext _context;
+        private IGenericRepository<OrderDetail> genericRepository = null;
 
-        public OrderDetailsController(SuperStoreContext context)
+        public OrderDetailsController(IGenericRepository<OrderDetail> repository)
         {
-            _context = context;
+            this.genericRepository = repository;
         }
 
         // GET: OrderDetails
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            var superStoreContext = _context.OrderDetails.Include(o => o.Order).Include(o => o.Product);
-            return View(await superStoreContext.ToListAsync());
+            var results = genericRepository.GetAll().Include(o => o.Order).Include(o => o.Product).ToList();
+            return View(results);
         }
 
         // GET: OrderDetails/Details/5
