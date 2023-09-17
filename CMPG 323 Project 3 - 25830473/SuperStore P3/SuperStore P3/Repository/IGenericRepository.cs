@@ -10,7 +10,7 @@ namespace EcoPower_Logistics.Repository
         //void RemoveRange(IEnumerable<T> entities);
 
         IQueryable<T> GetAll();
-        T GetById(int id);
+        T GetById(int? id);
         void Insert(T entity);
         void Update(T entity);
         void Delete(int id);

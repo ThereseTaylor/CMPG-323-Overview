@@ -31,7 +31,7 @@ namespace Controllers
         }
 
         // GET: Customers/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
             var result = genericRepository.GetAll().FirstOrDefault(c => c.CustomerId == id);
             return View(result);
@@ -59,7 +59,7 @@ namespace Controllers
 
         // GET: Customer/Edit/5
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             Customer customer = genericRepository.GetById(id);
             return View(customer);

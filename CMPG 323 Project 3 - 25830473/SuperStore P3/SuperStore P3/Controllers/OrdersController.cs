@@ -54,7 +54,9 @@ namespace Controllers
         public IActionResult Create()
         {
             var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderId).ToList().LastOrDefault().OrderId;
-            ViewData["OrderId"] = lastId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["OrderId"] = new SelectList(newList);
             ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId");
             return View();
         }
@@ -70,16 +72,19 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+
             var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderId).ToList().LastOrDefault().OrderId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["OrderId"] = new SelectList(newList, order.OrderId);
             ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
-
         }
 
         // GET: Orders/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            if (genericRepository.GetAll().ToList() == null)
+            if (id == null || genericRepository.GetAll().ToList() == null)
             {
                 return NotFound();
             }
@@ -98,7 +103,7 @@ namespace Controllers
         // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind("OrderId,OrderDate,CustomerId,DeliveryAddress")] Order order)
+        public ActionResult Edit(int? id, [Bind("OrderId,OrderDate,CustomerId,DeliveryAddress")] Order order)
         {
             if (ModelState.IsValid)
             {

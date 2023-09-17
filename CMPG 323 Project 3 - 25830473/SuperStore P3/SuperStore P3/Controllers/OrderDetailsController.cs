@@ -17,13 +17,13 @@ namespace Controllers
     {
         private IGenericRepository<OrderDetail> genericRepository = null;
 
-        private IGenericRepository<Customer>? genericRepositoryC = null;
+        private IGenericRepository<Order>? genericRepositoryO = null;
         private IGenericRepository<Product>? genericRepositoryP = null;
 
-        public OrderDetailsController(IGenericRepository<OrderDetail> repository, IGenericRepository<Customer> genericRepositoryC, IGenericRepository<Product>? genericRepositoryP)
+        public OrderDetailsController(IGenericRepository<OrderDetail> repository, IGenericRepository<Order> genericRepositoryO, IGenericRepository<Product>? genericRepositoryP)
         {
             this.genericRepository = repository;
-            this.genericRepositoryC = genericRepositoryC;
+            this.genericRepositoryO = genericRepositoryO;
             this.genericRepositoryP = genericRepositoryP;
         }
 
@@ -51,128 +51,131 @@ namespace Controllers
         }
 
         // GET: OrderDetails/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
-            ViewData["OrderId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "OrderId", "OrderId");
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderDetailsId).ToList().LastOrDefault().OrderDetailsId + 1;
+            List<int> newList = new List<int>();
+            newList.Add(lastId);
+            ViewData["OrderDetailsId"] = new SelectList(newList);
+            ViewData["OrderId"] = new SelectList(genericRepositoryO?.GetAll().ToList(), "OrderId", "OrderId");
             ViewData["ProductId"] = new SelectList(genericRepositoryP?.GetAll().ToList(), "ProductId", "ProductId");
             return View();
         }
 
-        //// POST: OrderDetails/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("OrderDetailsId,OrderId,ProductId,Quantity,Discount")] OrderDetail orderDetail)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(orderDetail);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.OrderId);
-        //    ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+        // POST: OrderDetails/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken] 
+        public ActionResult Create([Bind("OrderDetailsId,OrderId,ProductId,Quantity,Discount")] OrderDetail orderDetail)
+        {
+            if (ModelState.IsValid)
+            {
+                genericRepository.Insert(orderDetail);
+                genericRepository.Save();
+                return RedirectToAction(nameof(Index));
+            }
 
-        //// GET: OrderDetails/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.OrderDetails == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderDetailsId).ToList().LastOrDefault().OrderDetailsId +1;
+            List<int> newList = new List<int>();
+            newList.Add(lastId);
+            ViewData["OrderDetailsId"] = new SelectList(newList, orderDetail.OrderDetailsId);
+            ViewData["OrderId"] = new SelectList(genericRepositoryO?.GetAll().ToList(), "OrderId", "OrderId", orderDetail.OrderId);
+            ViewData["ProductId"] = new SelectList(genericRepositoryP?.GetAll().ToList(), "ProductId", "ProductId", orderDetail.ProductId);
+            return View(orderDetail);
+        }
 
-        //    var orderDetail = await _context.OrderDetails.FindAsync(id);
-        //    if (orderDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.OrderId);
-        //    ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+        // GET: OrderDetails/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null || genericRepository.GetAll().ToList() == null)
+            {
+                return NotFound();
+            }
 
-        //// POST: OrderDetails/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("OrderDetailsId,OrderId,ProductId,Quantity,Discount")] OrderDetail orderDetail)
-        //{
-        //    if (id != orderDetail.OrderDetailsId)
-        //    {
-        //        return NotFound();
-        //    }
+            var orderDetail = genericRepository.GetById(id);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(orderDetail);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!OrderDetailExists(orderDetail.OrderDetailsId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.OrderId);
-        //    ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+            if (orderDetail == null)
+            {
+                return NotFound();
+            }
+            ViewData["OrderId"] = new SelectList(genericRepositoryO?.GetAll().ToList(), "OrderId", "OrderId", orderDetail.OrderId);
+            ViewData["ProductId"] = new SelectList(genericRepositoryP?.GetAll().ToList(), "ProductId", "ProductId", orderDetail.ProductId);
+            return View(orderDetail);
+        }
 
-        //// GET: OrderDetails/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.OrderDetails == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // POST: OrderDetails/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, [Bind("OrderDetailsId,OrderId,ProductId,Quantity,Discount")] OrderDetail orderDetail)
+        {
+            if (id != orderDetail.OrderDetailsId)
+            {
+                return NotFound();
+            }
 
-        //    var orderDetail = await _context.OrderDetails
-        //        .Include(o => o.Order)
-        //        .Include(o => o.Product)
-        //        .FirstOrDefaultAsync(m => m.OrderDetailsId == id);
-        //    if (orderDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    genericRepository.Update(orderDetail);
+                    genericRepository.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OrderDetailExists(orderDetail.OrderDetailsId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["OrderId"] = new SelectList(genericRepositoryO?.GetAll().ToList(), "OrderId", "OrderId", orderDetail.OrderId);
+            ViewData["ProductId"] = new SelectList(genericRepositoryP?.GetAll().ToList(), "ProductId", "ProductId", orderDetail.ProductId);
+            return View(orderDetail);
+        }
 
-        //    return View(orderDetail);
-        //}
+        // GET: OrderDetails/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null || genericRepositoryO?.GetAll().ToList() == null)
+            {
+                return NotFound();
+            }
 
-        //// POST: OrderDetails/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.OrderDetails == null)
-        //    {
-        //        return Problem("Entity set 'SuperStoreContext.OrderDetails'  is null.");
-        //    }
-        //    var orderDetail = await _context.OrderDetails.FindAsync(id);
-        //    if (orderDetail != null)
-        //    {
-        //        _context.OrderDetails.Remove(orderDetail);
-        //    }
+            var orderDetail = genericRepository.GetAll().Include(o => o.Order).Include(o => o.Product).FirstOrDefault(m => m.OrderDetailsId == id);
+            if (orderDetail == null)
+            {
+                return NotFound();
+            }
 
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return View(orderDetail);
+        }
 
-        //private bool OrderDetailExists(int id)
-        //{
-        //    return (_context.OrderDetails?.Any(e => e.OrderDetailsId == id)).GetValueOrDefault();
-        //}
+        // POST: OrderDetails/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (genericRepository.GetAll().ToList() == null)
+            {
+                return Problem("Entity set 'SuperStoreContext.OrderDetails'  is null.");
+            }
+            var orderDetail = genericRepository.GetById(id);
+            if (orderDetail != null)
+            {
+                genericRepository.Delete(id);
+            }
+
+            genericRepository.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool OrderDetailExists(int id)
+        {
+            return (genericRepository.GetAll()?.Any(e => e.OrderDetailsId == id)).GetValueOrDefault();
+        }
     }
 }
