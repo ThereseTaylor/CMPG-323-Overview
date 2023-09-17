@@ -33,13 +33,28 @@ namespace Controllers
         // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
+            if (id == null || genericRepository.GetAll() == null)
+            {
+                return NotFound();
+            }
+
             var result = genericRepository.GetAll().FirstOrDefault(c => c.CustomerId == id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             return View(result);
         }
 
         // GET: Customers/Create
         public ActionResult Create()
         {
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.CustomerId).ToList().LastOrDefault().CustomerId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["CustomerId"] = new SelectList(newList);
             return View();
         }
 
@@ -54,6 +69,10 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.CustomerId).ToList().LastOrDefault().CustomerId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["CustomerId"] = new SelectList(newList, customer.CustomerId);
             return View(customer);
         }
 
@@ -112,9 +131,21 @@ namespace Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            genericRepository.Delete(id);
+            if (genericRepository.GetAll().ToList() == null)
+            {
+                return Problem("Entity set 'SuperStoreContext.Customer'  is null.");
+            }
+
+            var customer = genericRepository.GetById(id);
+
+            if (customer != null)
+            {
+                genericRepository.Delete(id);
+            }
+
             genericRepository.Save();
             return RedirectToAction(nameof(Index));
+         
         }
 
         private bool CustomerExists(int id)

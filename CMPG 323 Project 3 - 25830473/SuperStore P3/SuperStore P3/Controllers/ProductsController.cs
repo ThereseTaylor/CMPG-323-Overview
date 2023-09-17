@@ -32,13 +32,28 @@ namespace Controllers
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {
+            if (id == null || genericRepository.GetAll() == null)
+            {
+                return NotFound();
+            }
+
             var result = genericRepository.GetAll().FirstOrDefault(p => p.ProductId == id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             return View(result);
         }
 
         // GET: Products/Create
         public ActionResult Create()
         {
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.ProductId).ToList().LastOrDefault().ProductId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["ProductId"] = new SelectList(newList);
             return View();
         }
 
@@ -53,6 +68,10 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.ProductId).ToList().LastOrDefault().ProductId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["ProductId"] = new SelectList(newList, product.ProductId);
             return View(product);
         }
 
@@ -112,7 +131,18 @@ namespace Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            genericRepository.Delete(id);
+            if (genericRepository.GetAll().ToList() == null)
+            {
+                return Problem("Entity set 'SuperStoreContext.Product'  is null.");
+            }
+
+            var customer = genericRepository.GetById(id);
+
+            if (customer != null)
+            {
+                genericRepository.Delete(id);
+            }
+
             genericRepository.Save();
             return RedirectToAction(nameof(Index));
         }
