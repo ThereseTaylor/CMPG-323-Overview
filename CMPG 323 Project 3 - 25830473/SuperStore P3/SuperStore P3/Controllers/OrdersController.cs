@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Data;
 using EcoPower_Logistics.Repository;
+using System.Drawing;
 
 namespace Controllers
 {
@@ -16,10 +17,12 @@ namespace Controllers
     public class OrdersController : Controller
     {
         private IGenericRepository<Order> genericRepository = null;
+        private IGenericRepository<Customer>? genericRepositoryC = null;
 
-        public OrdersController(IGenericRepository<Order> repository)
+        public OrdersController(IGenericRepository<Order> repository, IGenericRepository<Customer>? genericRepositoryC)
         {
             this.genericRepository = repository;
+            this.genericRepositoryC = genericRepositoryC;
         }
 
         // GET: Orders
@@ -50,7 +53,9 @@ namespace Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(genericRepository.GetAll().ToList(), "CustomerId", "CustomerId");
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderId).ToList().LastOrDefault().OrderId;
+            ViewData["OrderId"] = lastId;
+            ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId");
             return View();
         }
 
@@ -65,7 +70,8 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(genericRepository.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderId).ToList().LastOrDefault().OrderId;
+            ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
 
         }
@@ -85,7 +91,7 @@ namespace Controllers
                 return NotFound();
             }
 
-            ViewData["CustomerId"] = new SelectList(genericRepository.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
         }
 
@@ -112,7 +118,8 @@ namespace Controllers
                         throw;
                     }
                 }
-                ViewData["CustomerId"] = new SelectList(genericRepository.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
+
+                ViewData["CustomerId"] = new SelectList(genericRepositoryC?.GetAll().ToList(), "CustomerId", "CustomerId", order.CustomerId);
                 return RedirectToAction(nameof(Index));
             }
             else
