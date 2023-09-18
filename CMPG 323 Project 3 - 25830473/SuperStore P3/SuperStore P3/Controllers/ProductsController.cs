@@ -15,17 +15,27 @@ namespace Controllers
     [Authorize]
     public class ProductsController : Controller
     {
-        private IGenericRepository<Product> genericRepository = null;
+        private IGenericRepository<Product> genericRepository;
+        private IProductRepository productRepository =  null;
 
-        public ProductsController(IGenericRepository<Product> repository)
+        public ProductsController(IGenericRepository<Product> repository, IProductRepository productRepository)
         {
             this.genericRepository = repository;
+            this.productRepository = productRepository;
         }
 
         // GET: Products
         public ActionResult Index()
         {
             var results = genericRepository.GetAll().ToList();
+            return View(results);
+        }   
+
+        //GET: Products/Stock
+        //This method views all the product that have 0 units left in stock.
+        public ActionResult Stock()
+        {
+            var results = productRepository.GetDepletedStock();
             return View(results);
         }
 
@@ -86,7 +96,7 @@ namespace Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("ProductID, ProductName, ProductDescription, UnitsInStock")] Product product)
+        public ActionResult Edit([Bind("ProductId, ProductName, ProductDescription, UnitsInStock")] Product product)
         {
             if (ModelState.IsValid)
             {
