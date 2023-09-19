@@ -10,6 +10,7 @@ using Models;
 using Data;
 using EcoPower_Logistics.Repository;
 using System.Drawing;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace Controllers
 {
@@ -19,10 +20,13 @@ namespace Controllers
         private IGenericRepository<Order> genericRepository = null;
         private IGenericRepository<Customer>? genericRepositoryC = null;
 
-        public OrdersController(IGenericRepository<Order> repository, IGenericRepository<Customer>? genericRepositoryC)
+        private IOrderRepository orderRepository = null;
+
+        public OrdersController(IGenericRepository<Order> repository, IGenericRepository<Customer>? genericRepositoryC, IOrderRepository orderRepository)
         {
             this.genericRepository = repository;
             this.genericRepositoryC = genericRepositoryC;
+            this.orderRepository = orderRepository;
         }
 
         // GET: Orders
@@ -30,6 +34,12 @@ namespace Controllers
         {
             var results = genericRepository.GetAll().Include(c => c.Customer).ToList();
             return View(results); ;
+        }
+
+        public ActionResult OldOrders()
+        {
+            var result = orderRepository.GetOldOrders();
+            return View(result);
         }
 
         // GET: Orders/Details/5

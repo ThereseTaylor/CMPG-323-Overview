@@ -8,7 +8,9 @@ namespace EcoPower_Logistics.Repository
     {
         public CustomerRepository(SuperStoreContext context) : base(context)
         {
+
         }
     }
 
 }
+
