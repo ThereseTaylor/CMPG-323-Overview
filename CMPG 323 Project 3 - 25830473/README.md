@@ -4,6 +4,7 @@
 <ul>
   <li>To access Web Application: https://cmpg323project3-dev.azurewebsites.net</li>
   <li>When using the application you firstly need to register and then log in. Once you are logged in you can access all the methods, either through the links provided on the interface or the endpoints.</li>
+  <li>Background: This project implements repository patterns. There is a generic repository and interface, where all the controllers access the generic data access methods, and a repository and interface for each controller that contains the non-generic methods spesific to that controller.</li>
 </ul>
 
 **<ins>Endpoints:</ins>**
