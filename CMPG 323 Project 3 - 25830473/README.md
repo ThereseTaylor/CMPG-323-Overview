@@ -1,6 +1,41 @@
 # CMPG 323 Project 3
 
-**<ins>How to use:</ins>**<br />
+**<ins>How to use:</ins>**<br/>
+<ul>
+  <li>To access Web Application: https://cmpg323project3-dev.azurewebsites.net</li>
+  <li>When using the application you firstly need to register and then log in. Once you are logged in you can access all the methods, either through the links provided on the interface or the endpoints.</li>
+</ul>
+
+**<ins>Endpoints:</ins>**
+<ul>
+  <li><strong>Customers:</strong></li>
+  <ul>
+    <li>/Customers</li>
+    <li>/Customers/</li>
+    <li>/Customers/Details/{id}</li>
+    <li>/Customers/Create</li>
+    <li>/Customers/Edit/{id}</li>
+    <li>/Customers/Delete/{id}</li>
+  </ul>
+  <li><strong>Orders:</strong></li>
+  <ul>
+    <li>/Orders</li>
+    <li>/Orders/OldOrders</li>
+    <li>/Orders/Details/{id}</li>
+    <li>/Orders/Create</li>
+    <li>/Orders/Edit/{id}</li>
+    <li>/Orders/Delete/{id}</li>
+  </ul>
+  <li><strong>Products:</strong></li>
+  <ul>
+    <li>/Products</li>
+    <li>/Products/Stock</li>
+    <li>/Products/Details/{id}</li>
+    <li>/Products/Create</li>
+    <li>/Products/Edit/{id}</li>
+    <li>/Products/Delete/{id}</li>
+  </ul>
+</ul>
 
 
 **<ins>Reference List:</ins>**
