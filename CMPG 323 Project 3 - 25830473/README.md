@@ -5,7 +5,15 @@
 
 **<ins>Reference List:</ins>**
 <ul>
-  <li> Kılıçarslan, S. 2019. Repository Pattern Implementation in ASP.NET Core. https://medium.com/net-core/repository-pattern-implementation-in-asp-net-core-21e01c6664d7 Date of access: 15 Sept. 2023.
-
-</li>
+  <li> Dukstra, T. 2022. <em>Implementing the Repository and Unit of Work Patterns in an ASP.NET MVC Application (9 of 10).</em> https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application#the-repository-and-unit-of-work-patterns Date of access: 15 Sept. 2023.</li>
+  <li>Hilton, J. 2018. <em>Pre-populate a textbox using ASP.NET Core MVC. </em> https://jonhilton.net/2018/02/05/pre-populate-a-textbox-using-asp.net-core-mvc/ Date of access: 17 Sept. 2023.</li>
+  <li> Jaybhay, S. 2020. <em>Working With Multiple Tables In MVC By Sagar Jaybhay. </em> https://medium.com/@sagar_jaybhay/working-with-multiple-tables-in-mvc-by-sagar-jaybhay-912c5c161892 Date of access: 16 Sept. 2023. </li>
+  <li> Kanjilal, J. 2015. <em> Implementing the Single Responsibility Principle in C#. </em> https://www.infoworld.com/article/2946023/implementing-the-single-responsibility-principle-in-c.html Date of access: 18 Sept. 2023.</li>
+  <li> Khan, M. 2016. <em> Display data in Single View from Multiple Tables in ASP.Net MVC</em> https://www.aspsnippets.com/Articles/Display-data-in-Single-View-from-Multiple-Tables-in-ASPNet-MVC.aspx Date of access: 16 Sept. 2023.</li>
+  <li> Kılıçarslan, S. 2019. <em>Repository Pattern Implementation in ASP.NET Core. </em> https://medium.com/net-core/repository-pattern-implementation-in-asp-net-core-21e01c6664d7 Date of access: 15 Sept. 2023.</li>
+  <li> Microsoft. 2023. <em>Use ViewData and Implement ViewModel Classes. </em> https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/nerddinner/use-viewdata-and-implement-viewmodel-classes Date of access: 17 Sept. 2023</li>
+  <li> Siddique, N. 2020. <em>What is ViewData in ASP .Net MVC C#?</em> https://www.tutorialspoint.com/what-is-viewdata-in-asp-net-mvc-chash#:~:text=ViewData%20is%20a%20dictionary%20of,view%2C%20not%20vice%2Dversa. Date of access: 17 Sept. 2023</li>
+  <li>Spasojevic, M. 2022. <em>SOLID Principles in C# – Open Closed Principle. </em> https://code-maze.com/open-closed-principle/ Date of access: 19 Sept. 2023.</li>
+  <li> TEKTUTORIALSHUB. 2020.<em>Entity Framework Include method</em> https://www.tektutorialshub.com/entity-framework/entity-framework-include-method/ Date of access: 17 Sept. 2023.</li>
 </ul>
+
