@@ -17,6 +17,7 @@ namespace Controllers
     {
         private IGenericRepository<OrderDetail> genericRepository = null;
 
+        //The repository is added to get the values of the foreign keys.
         private IGenericRepository<Order>? genericRepositoryO = null;
         private IGenericRepository<Product>? genericRepositoryP = null;
 
@@ -53,9 +54,11 @@ namespace Controllers
         // GET: OrderDetails/Create
         public ActionResult Create()
         {
+            //newList get the value of the next open ID, so that the user can't put one in that already exists.
             var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.OrderDetailsId).ToList().LastOrDefault().OrderDetailsId + 1;
             List<int> newList = new List<int>();
             newList.Add(lastId);
+            //This shows the ID to the user in the view
             ViewData["OrderDetailsId"] = new SelectList(newList);
             ViewData["OrderId"] = new SelectList(genericRepositoryO?.GetAll().ToList(), "OrderId", "OrderId");
             ViewData["ProductId"] = new SelectList(genericRepositoryP?.GetAll().ToList(), "ProductId", "ProductId");
@@ -173,6 +176,7 @@ namespace Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Method that checks whether the id that the user gives exists or not.
         private bool OrderDetailExists(int id)
         {
             return (genericRepository.GetAll()?.Any(e => e.OrderDetailsId == id)).GetValueOrDefault();

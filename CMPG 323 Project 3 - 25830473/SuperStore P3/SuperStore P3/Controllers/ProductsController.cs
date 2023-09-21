@@ -16,6 +16,8 @@ namespace Controllers
     public class ProductsController : Controller
     {
         private IGenericRepository<Product> genericRepository;
+
+        //Non-generic repository
         private IProductRepository productRepository =  null;
 
         public ProductsController(IGenericRepository<Product> repository, IProductRepository productRepository)
@@ -32,7 +34,7 @@ namespace Controllers
         }   
 
         //GET: Products/Stock
-        //This method views all the product that have 0 units left in stock.
+        //This method views all the products that have 0 units left in stock.
         public ActionResult Stock()
         {
             var results = productRepository.GetDepletedStock();
@@ -60,9 +62,12 @@ namespace Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
+            //newList get the value of the next open ID, so that the user can't put one in that already exists.
             var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.ProductId).ToList().LastOrDefault().ProductId;
             List<int> newList = new List<int>();
             newList.Add(lastId + 1);
+
+            //This shows the ID to the user in the view
             ViewData["ProductId"] = new SelectList(newList);
             return View();
         }
@@ -157,6 +162,7 @@ namespace Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Method that checks whether the id that the user gives exists or not.
         private bool ProductExists(int id)
         {
             return (genericRepository.GetAll()?.Any(e => e.ProductId == id)).GetValueOrDefault();

@@ -9,7 +9,7 @@ namespace EcoPower_Logistics.Repository
         public CustomerRepository(SuperStoreContext context) : base(context)
         {}
 
-        //This method can for example be used to get a list of all the customers who are male
+        //This method can be used to get a list of all the customers who are male.
         public IEnumerable<Customer> GetMale()
         {
             return _context.Customers.Where(o => o.CustomerTitle == "Mr").ToList();

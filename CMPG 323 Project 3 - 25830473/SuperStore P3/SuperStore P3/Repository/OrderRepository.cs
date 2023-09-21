@@ -10,6 +10,7 @@ namespace EcoPower_Logistics.Repository
         {
         }
 
+        //This method gets old orders, as they can possibly be deleted from the database.
         public IEnumerable<Order> GetOldOrders()
         {
             return _context.Orders.Where(o => o.OrderDate.Year < 2015).ToList();

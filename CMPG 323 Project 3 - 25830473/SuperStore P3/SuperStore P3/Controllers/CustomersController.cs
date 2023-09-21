@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Models;
 using EcoPower_Logistics.Repository;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Controllers
 {
@@ -16,6 +17,8 @@ namespace Controllers
     public class CustomersController : Controller
     {
         private IGenericRepository<Customer> genericRepository = null;
+
+        //Non-generic repository
         private ICustomerRepository customerRepository;
 
         public CustomersController(IGenericRepository<Customer> repository, ICustomerRepository customerRepository)
@@ -49,25 +52,29 @@ namespace Controllers
             return View(result);
         }
 
+        //This method is in the non-generic repository and gets all male customers.
         //GET: Customers/MaleCustomers
         public ActionResult MaleCustomers()
         {
+            var result = customerRepository?.GetMale();
 
-            if (customerRepository.GetMale() == null)
+            if (result == null)
             {
                 return NotFound();
             }
 
-            var result = customerRepository?.GetMale();
             return View(result);
         }
 
         // GET: Customers/Create
         public ActionResult Create()
         {
+            //newList get the value of the next open ID, so that the user can't put one in that already exists.
             var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
             List<int> newList = new List<int>();
             newList.Add(lastId + 1);
+
+            //This shows the ID to the user in the view
             ViewData["CustomerId"] = new SelectList(newList);
             return View();
         }
@@ -83,6 +90,7 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+
             var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
             List<int> newList = new List<int>();
             newList.Add(lastId + 1);
@@ -161,7 +169,7 @@ namespace Controllers
             return RedirectToAction(nameof(Index));
          
         }
-
+        //Method that checks whether the id that the user gives exists or not.
         private bool CustomerExists(int id)
         {
             return (genericRepository.GetAll()?.Any(e => e.CustomerId == id)).GetValueOrDefault();

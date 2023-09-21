@@ -11,6 +11,7 @@ namespace EcoPower_Logistics.Repository
         {
         }
 
+        //This method get the details of products that have no units left in stock.
         public IEnumerable<Product> GetDepletedStock()
         {
             return _context.Products.Where(p => p.UnitsInStock == 0).ToList();
