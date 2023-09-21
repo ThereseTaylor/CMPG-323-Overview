@@ -12,7 +12,7 @@
   <li><strong>Customers:</strong></li>
   <ul>
     <li>/Customers</li>
-    <li>/Customers/</li>
+    <li>/Customers/MaleCustomers</li>
     <li>/Customers/Details/{id}</li>
     <li>/Customers/Create</li>
     <li>/Customers/Edit/{id}</li>
