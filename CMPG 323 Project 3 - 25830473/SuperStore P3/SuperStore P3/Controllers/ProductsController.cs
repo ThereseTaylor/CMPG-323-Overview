@@ -38,6 +38,12 @@ namespace Controllers
         public ActionResult Stock()
         {
             var results = productRepository.GetDepletedStock();
+
+            if (results == null)
+            {
+                return NotFound();
+            }
+
             return View(results);
         }
 

@@ -45,6 +45,12 @@ namespace Controllers
         public ActionResult OldOrders()
         {
             var result = orderRepository.GetOldOrders();
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             return View(result);
         }
 

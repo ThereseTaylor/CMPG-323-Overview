@@ -7,7 +7,7 @@ namespace EcoPower_Logistics.Repository
 {
     public class ProductRepository: GenericRepository<Product>, IProductRepository
     {
-        public ProductRepository()
+        public ProductRepository(SuperStoreContext context) : base(context)
         {
         }
 
