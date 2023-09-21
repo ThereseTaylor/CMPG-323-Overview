@@ -15,12 +15,13 @@ namespace Controllers
     [Authorize]
     public class CustomersController : Controller
     {
-
         private IGenericRepository<Customer> genericRepository = null;
+        private ICustomerRepository customerRepository;
 
-        public CustomersController(IGenericRepository<Customer> repository)
+        public CustomersController(IGenericRepository<Customer> repository, ICustomerRepository customerRepository)
         {
             this.genericRepository = repository;
+            this.customerRepository = customerRepository;
         }
 
         // GET: Customers
@@ -48,10 +49,23 @@ namespace Controllers
             return View(result);
         }
 
+        //GET: Customers/MaleCustomers
+        public ActionResult MaleCustomers()
+        {
+
+            if (customerRepository.GetMale() == null)
+            {
+                return NotFound();
+            }
+
+            var result = customerRepository?.GetMale();
+            return View(result);
+        }
+
         // GET: Customers/Create
         public ActionResult Create()
         {
-            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.CustomerId).ToList().LastOrDefault().CustomerId;
+            var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
             List<int> newList = new List<int>();
             newList.Add(lastId + 1);
             ViewData["CustomerId"] = new SelectList(newList);
@@ -69,7 +83,7 @@ namespace Controllers
                 genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
-            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.CustomerId).ToList().LastOrDefault().CustomerId;
+            var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
             List<int> newList = new List<int>();
             newList.Add(lastId + 1);
             ViewData["CustomerId"] = new SelectList(newList, customer.CustomerId);

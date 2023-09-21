@@ -17,8 +17,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllers(
     options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddTransient<IProductRepository, ProductRepository> ();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+
 //builder.Services.AddTransient<>
 
 var app = builder.Build();
