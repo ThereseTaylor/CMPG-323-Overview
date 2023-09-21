@@ -37,6 +37,9 @@
     <li>/Products/Edit/{id}</li>
     <li>/Products/Delete/{id}</li>
   </ul>
+  </ul>
+    <li>OrderDetails also has all the generic methods, it just isn't on the home view.</li>
+  <ul>
 </ul>
 
 
