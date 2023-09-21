@@ -8,101 +8,102 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using Models;
+using EcoPower_Logistics.Repository;
 
 namespace Controllers
 {
     [Authorize]
     public class ProductsController : Controller
     {
-        private readonly SuperStoreContext _context;
+        private IGenericRepository<Product> genericRepository;
+        private IProductRepository productRepository =  null;
 
-        public ProductsController(SuperStoreContext context)
+        public ProductsController(IGenericRepository<Product> repository, IProductRepository productRepository)
         {
-            _context = context;
+            this.genericRepository = repository;
+            this.productRepository = productRepository;
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return _context.Products != null ?
-                        View(await _context.Products.ToListAsync()) :
-                        Problem("Entity set 'SuperStoreContext.Products'  is null.");
+            var results = genericRepository.GetAll().ToList();
+            return View(results);
+        }   
+
+        //GET: Products/Stock
+        //This method views all the product that have 0 units left in stock.
+        public ActionResult Stock()
+        {
+            var results = productRepository.GetDepletedStock();
+            return View(results);
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || genericRepository.GetAll() == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (product == null)
+            var result = genericRepository.GetAll().FirstOrDefault(p => p.ProductId == id);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(result);
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.ProductId).ToList().LastOrDefault().ProductId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["ProductId"] = new SelectList(newList);
             return View();
         }
 
         // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ProductDescription,UnitsInStock")] Product product)
+        public ActionResult Create([Bind("ProductID, ProductName, ProductDescription, UnitsInStock")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                genericRepository.Insert(product);
+                genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+            var lastId = genericRepository.GetAll().ToList().OrderBy(i => i.ProductId).ToList().LastOrDefault().ProductId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["ProductId"] = new SelectList(newList, product.ProductId);
             return View(product);
         }
 
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Product/Edit/5
+        [HttpGet]
+        public ActionResult Edit(int? id)
         {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            Product product = genericRepository.GetById(id);
             return View(product);
         }
 
         // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ProductDescription,UnitsInStock")] Product product)
+        public ActionResult Edit([Bind("ProductId, ProductName, ProductDescription, UnitsInStock")] Product product)
         {
-            if (id != product.ProductId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    genericRepository.Update(product);
+                    genericRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,49 +118,48 @@ namespace Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            else
+            {
+                return View(product);
+            }
+
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(bool? saveChangesError = false, int id = 0)
         {
-            if (id == null || _context.Products == null)
+            if (saveChangesError.GetValueOrDefault())
             {
-                return NotFound();
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
+            Product product = genericRepository.GetById(id);
             return View(product);
         }
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
-            if (_context.Products == null)
+            if (genericRepository.GetAll().ToList() == null)
             {
-                return Problem("Entity set 'SuperStoreContext.Products'  is null.");
-            }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
+                return Problem("Entity set 'SuperStoreContext.Product'  is null.");
             }
 
-            await _context.SaveChangesAsync();
+            var customer = genericRepository.GetById(id);
+
+            if (customer != null)
+            {
+                genericRepository.Delete(id);
+            }
+
+            genericRepository.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-            return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
+            return (genericRepository.GetAll()?.Any(e => e.ProductId == id)).GetValueOrDefault();
         }
     }
 }

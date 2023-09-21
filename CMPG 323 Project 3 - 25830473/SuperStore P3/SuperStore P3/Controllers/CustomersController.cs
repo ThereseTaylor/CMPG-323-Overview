@@ -8,101 +8,107 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using Models;
+using EcoPower_Logistics.Repository;
 
 namespace Controllers
 {
     [Authorize]
     public class CustomersController : Controller
     {
-        private readonly SuperStoreContext _context;
+        private IGenericRepository<Customer> genericRepository = null;
+        private ICustomerRepository customerRepository;
 
-        public CustomersController(SuperStoreContext context)
+        public CustomersController(IGenericRepository<Customer> repository, ICustomerRepository customerRepository)
         {
-            _context = context;
+            this.genericRepository = repository;
+            this.customerRepository = customerRepository;
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return _context.Customers != null ?
-                        View(await _context.Customers.ToListAsync()) :
-                        Problem("Entity set 'SuperStoreContext.Customers'  is null.");
+            var results = genericRepository.GetAll().ToList();
+            return View(results);
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
-            if (id == null || _context.Customers == null)
+            if (id == null || genericRepository.GetAll() == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var result = genericRepository.GetAll().FirstOrDefault(c => c.CustomerId == id);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(result);
+        }
+
+        //GET: Customers/MaleCustomers
+        public ActionResult MaleCustomers()
+        {
+
+            if (customerRepository.GetMale() == null)
+            {
+                return NotFound();
+            }
+
+            var result = customerRepository?.GetMale();
+            return View(result);
         }
 
         // GET: Customers/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
+            var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["CustomerId"] = new SelectList(newList);
             return View();
         }
 
         // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,CustomerTitle,CustomerName,CustomerSurname,CellPhone")] Customer customer)
+        public ActionResult Create([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                genericRepository.Insert(customer);
+                genericRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
+            var lastId = genericRepository.GetAll().OrderBy(i => i.CustomerId).LastOrDefault().CustomerId;
+            List<int> newList = new List<int>();
+            newList.Add(lastId + 1);
+            ViewData["CustomerId"] = new SelectList(newList, customer.CustomerId);
             return View(customer);
         }
 
-        // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Customer/Edit/5
+        [HttpGet]
+        public ActionResult Edit(int? id)
         {
-            if (id == null || _context.Customers == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+            Customer customer = genericRepository.GetById(id);
             return View(customer);
         }
 
         // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,CustomerTitle,CustomerName,CustomerSurname,CellPhone")] Customer customer)
+        public ActionResult Edit([Bind("CustomerId, CustomerTitle, CustomerName, CustomerSurname, CellPhone")] Customer customer)
         {
-            if (id != customer.CustomerId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
-            {
+            {             
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    genericRepository.Update(customer);
+                    genericRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,49 +123,48 @@ namespace Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            else
+            {
+                return View(customer);
+            }
         }
 
         // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(bool? saveChangesError = false, int id = 0)
         {
-            if (id == null || _context.Customers == null)
+            if (saveChangesError.GetValueOrDefault())
             {
-                return NotFound();
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
+            Customer customer = genericRepository.GetById(id);
             return View(customer);
         }
 
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
-            if (_context.Customers == null)
+            if (genericRepository.GetAll().ToList() == null)
             {
-                return Problem("Entity set 'SuperStoreContext.Customers'  is null.");
-            }
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
+                return Problem("Entity set 'SuperStoreContext.Customer'  is null.");
             }
 
-            await _context.SaveChangesAsync();
+            var customer = genericRepository.GetById(id);
+
+            if (customer != null)
+            {
+                genericRepository.Delete(id);
+            }
+
+            genericRepository.Save();
             return RedirectToAction(nameof(Index));
+         
         }
 
         private bool CustomerExists(int id)
         {
-            return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();
+            return (genericRepository.GetAll()?.Any(e => e.CustomerId == id)).GetValueOrDefault();
         }
     }
 }
