@@ -1,9 +1,16 @@
 # CMPG 323 Project 5
 
-**<ins>How to use:</ins>**
+**<ins>Notes:</ins>**
 <ul>
   <li>The link to my report : https://app.powerbi.com/links/T05ObCMrwN?ctid=b14d86f1-83ba-4b13-a702-b5c0231b9337&pbi_source=linkShare </li>
-  <li> The EcoPower Logistics - Order Monitoring file is the used as as Power Bi Dataset for the report EcoPower Logistics (this file thus contains the visuals). This is used so that all reports that use this data has a live connection to dataset.</li>
+  <li> The "EcoPower Logistics - Order Monitoring" file is the used as a Power Bi Dataset for the report "EcoPower Logistics" (this file thus contains the visuals). This is used so that all reports that use this data has a live connection to dataset.</li>
+  <li>The two data sources used: an excel file and my Azure SQL Database created in project 2. The data from the database is appended to the data in the excel file to create one dataset.</li>
+</ul>
+
+**<ins>Notes:</ins>**
+<ul>
+  <li>Click on the name of a page on the left side of the report. This will take you to all of the visuals for that page.</li>
+  <li>Clicking on a visual filters the page and some filters work across pages.</li>
 </ul>
 
 **<ins>Reference List:</ins>**
