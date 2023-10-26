@@ -3,7 +3,7 @@
 **<ins>How to use:</ins>**
 <ul>
   <li>The link to my report : https://app.powerbi.com/links/T05ObCMrwN?ctid=b14d86f1-83ba-4b13-a702-b5c0231b9337&pbi_source=linkShare </li>
-  <li> The EcoPower Logistics - Order Monitoring file is the used as as Power Bi Dataset for my report EcoPower Logistics. This is used so that all reports that use this data has a live connection to dataset.</li>
+  <li> The EcoPower Logistics - Order Monitoring file is the used as as Power Bi Dataset for the report EcoPower Logistics (this file thus contains the visuals). This is used so that all reports that use this data has a live connection to dataset.</li>
 </ul>
 
 **<ins>Reference List:</ins>**
