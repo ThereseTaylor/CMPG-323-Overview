@@ -7,7 +7,7 @@
   <li>The two data sources used: an excel file and my Azure SQL Database created in project 2. The data from the database is appended to the data in the excel file to create one dataset.</li>
 </ul>
 
-**<ins>Notes:</ins>**
+**<ins>How to use:</ins>**
 <ul>
   <li>Click on the name of a page on the left side of the report. This will take you to all of the visuals for that page.</li>
   <li>Clicking on a visual filters the page and some filters work across pages.</li>
